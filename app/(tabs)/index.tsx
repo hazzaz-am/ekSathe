@@ -1,15 +1,19 @@
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import {
-	ArrowRightSquare,
 	Bell,
 	ChevronRightIcon,
 	GiftIcon,
 	Lightbulb,
 	MessageCircle,
+	PlusIcon,
 	UsersIcon,
 } from "lucide-react-native";
 import { Image, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+const ACCENT = "#0D9488";
+const INK = "#14151A";
+const MUTED = "#6B7280";
 
 const Home = () => {
 	const spotlightData = [
@@ -29,7 +33,7 @@ const Home = () => {
 			id: "12",
 			image: "https://playov2.gumlet.io/v3_homescreen/marketing_journey/playo_spotlight_03.png",
 			text: "Hacks to win",
-			description: "Yes, Please!",
+			description: "Yes, please",
 		},
 		{
 			id: "13",
@@ -39,17 +43,36 @@ const Home = () => {
 		},
 	];
 
+	const listRows = [
+		{
+			id: "groups",
+			icon: <UsersIcon size={18} stroke={ACCENT} />,
+			title: "Groups",
+			subtitle: "Connect, compete and discuss",
+		},
+		{
+			id: "activities",
+			icon: <Lightbulb size={18} stroke={ACCENT} />,
+			title: "Game time activities",
+			subtitle: "410 ekSathe hosted games",
+		},
+	];
+
 	return (
 		<SafeAreaView className="flex-1 bg-white">
-			<View className="px-4 py-3 bg-white flex-row justify-between items-center border-b border-gray-200">
+			<View className="px-5 pt-2 pb-4 flex-row justify-between items-center">
 				<View className="flex-1">
-					<Text className="text-gray-400 text-xs">Location</Text>
-					<Text className="text-lg font-semibold">Dhaka, Bangladesh</Text>
+					<Text className="text-xs" style={{ color: MUTED }}>
+						Location
+					</Text>
+					<Text className="text-lg font-semibold mt-0.5" style={{ color: INK }}>
+						Dhaka, Bangladesh
+					</Text>
 				</View>
 
-				<View className="flex-row gap-4 items-center ml-2">
-					<MessageCircle size={20} stroke="#333" />
-					<Bell size={20} stroke="#333" />
+				<View className="flex-row gap-5 items-center ml-2">
+					<MessageCircle size={20} stroke={INK} />
+					<Bell size={20} stroke={INK} />
 					<Pressable>
 						<Image
 							className="w-8 h-8 rounded-full"
@@ -61,135 +84,177 @@ const Home = () => {
 				</View>
 			</View>
 
-			<ScrollView className="px-4" showsVerticalScrollIndicator={false}>
-				<View className="bg-[#f4f4f5] rounded-2xl p-4 mt-4 flex-row items-center justify-between">
+			<ScrollView className="px-5" showsVerticalScrollIndicator={false}>
+				<TouchableOpacity className="flex-row items-center justify-between py-3 border-b" style={{ borderColor: "#ECECE9" }}>
 					<View>
-						<Text className="text-lg font-semibold">Set your Weekly Fit Goal</Text>
-						<Text className="text-gray-500 text-sm mt-1">KEEP YOURSELF IN SHAPE</Text>
+						<Text className="text-base font-medium" style={{ color: INK }}>
+							Weekly fit goal
+						</Text>
+						<Text className="text-sm mt-0.5" style={{ color: MUTED }}>
+							Set a target and keep yourself in shape
+						</Text>
 					</View>
-					<ArrowRightSquare size={30} stroke="#000" />
-				</View>
+					<ChevronRightIcon size={18} stroke={MUTED} />
+				</TouchableOpacity>
 
-				<View className="bg-white border border-gray-200 rounded-2xl p-4 mt-4 shadow-sm relative">
-					<Text className="text-sm font-semibold text-gray-400">START PLAYING</Text>
+				<View
+					className="rounded-3xl p-5 mt-5"
+					style={{ backgroundColor: "#F7F7F6", borderWidth: 1, borderColor: "#ECECE9" }}
+				>
+					<Text className="text-xs" style={{ color: MUTED }}>
+						Start playing
+					</Text>
+					<Text className="text-xl font-semibold mt-1" style={{ color: INK }}>
+						Create a game
+					</Text>
+					<Text className="text-sm mt-1" style={{ color: MUTED }}>
+						No upcoming games in your calendar
+					</Text>
 
-					<View className="flex-row items-center justify-between">
-						<View>
-							<Text className="text-xl font-semibold mt-2">Create Game</Text>
-							<Text className="text-base text-gray-500 mt-1">No Upcoming games in your calendar</Text>
-						</View>
+					<View className="flex-row items-center justify-between mt-4">
+						<TouchableOpacity>
+							<Text className="text-sm font-medium" style={{ color: ACCENT }}>
+								View my calendar
+							</Text>
+						</TouchableOpacity>
 
-						<TouchableOpacity className="bg-white px-4 py-2 border border-gray-300 rounded-md">
-							<Text className="text-base font-semibold">Create</Text>
+						<TouchableOpacity
+							className="flex-row items-center gap-1.5 px-4 py-2.5 rounded-full"
+							style={{ backgroundColor: ACCENT }}
+						>
+							<PlusIcon size={16} stroke="#fff" />
+							<Text className="text-sm font-semibold text-white">Create</Text>
 						</TouchableOpacity>
 					</View>
+				</View>
 
-					<TouchableOpacity className="mt-3 self-center">
-						<Text className="text-base font-semibold text-[#222] underline">View My Calendar</Text>
+				<View className="mt-6">
+					{listRows.map((row, index) => (
+						<TouchableOpacity
+							key={row.id}
+							className="flex-row items-center justify-between py-3.5"
+							style={index < listRows.length - 1 ? { borderBottomWidth: 1, borderColor: "#ECECE9" } : undefined}
+						>
+							<View className="flex-row items-center gap-3">
+								<View className="w-9 h-9 rounded-full items-center justify-center" style={{ backgroundColor: "#E9F5F3" }}>
+									{row.icon}
+								</View>
+								<View>
+									<Text className="text-base font-medium" style={{ color: INK }}>
+										{row.title}
+									</Text>
+									<Text className="text-sm mt-0.5" style={{ color: MUTED }}>
+										{row.subtitle}
+									</Text>
+								</View>
+							</View>
+							<ChevronRightIcon size={18} stroke={MUTED} />
+						</TouchableOpacity>
+					))}
+				</View>
+
+				<View className="flex-row justify-between mt-6">
+					<TouchableOpacity className="w-[48%] rounded-2xl p-4" style={{ backgroundColor: "#F7F7F6" }}>
+						<Text className="text-base font-medium" style={{ color: INK }}>
+							Bookings
+						</Text>
+						<Text className="text-sm mt-0.5" style={{ color: MUTED }}>
+							Game history
+						</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity className="w-[48%] rounded-2xl p-4" style={{ backgroundColor: "#F7F7F6" }}>
+						<Text className="text-base font-medium" style={{ color: INK }}>
+							PlayPals
+						</Text>
+						<Text className="text-sm mt-0.5" style={{ color: MUTED }}>
+							Manage players
+						</Text>
 					</TouchableOpacity>
 				</View>
 
-				<View className="#f9fafb mt-5 rounded-2xl p-4 space-y-4">
-					<TouchableOpacity className="flex-row items-center justify-between">
-						<View className="flex-row items-center gap-3">
-							<View className="bg-green-100 p-2 rounded-full">
-								<UsersIcon size={20} stroke="#16a34a" />
-							</View>
-							<View>
-								<Text className="text-lg font-semibold text-gray-800">Groups</Text>
-								<Text className="text-gray-500 text-sm">Connect, Compete and Discuss</Text>
-							</View>
-						</View>
-						<ChevronRightIcon size={20} stroke="#333" />
-					</TouchableOpacity>
-
-					<TouchableOpacity className="flex-row items-center justify-between mt-6">
-						<View className="flex-row items-center gap-3">
-							<View className="bg-yellow-100 p-2 rounded-full">
-								<Lightbulb size={20} stroke="#facc15" />
-							</View>
-							<View>
-								<Text className="text-lg font-semibold text-gray-800">Game Time Activities</Text>
-								<Text className="text-gray-500 text-sm">410 ekSathe Hosted games</Text>
-							</View>
-						</View>
-						<ChevronRightIcon size={20} stroke="#333" />
-					</TouchableOpacity>
-				</View>
-
-				<View className="flex-row justify-between mt-5">
-					<TouchableOpacity className="bg-white w-[48%] rounded-2xl border border-gray-200 p-4 shadow-sm">
-						<Text className="text-base font-semibold text-black">Bookings</Text>
-						<Text className="text-gray-500 text-sm">Game History</Text>
-					</TouchableOpacity>
-
-					<TouchableOpacity className="bg-white w-[48%] rounded-2xl border border-gray-200 p-4 shadow-sm">
-						<Text className="text-base font-semibold text-black">PlayPals</Text>
-						<Text className="text-gray-500 text-sm">Manage Players</Text>
-					</TouchableOpacity>
-				</View>
-
-				<Text className="text-xl font-bold mt-6 mb-2">SpotLight</Text>
+				<Text className="text-lg font-semibold mt-8 mb-3" style={{ color: INK }}>
+					Spotlight
+				</Text>
 				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-					{spotlightData.map((item, index) => (
-						<TouchableOpacity className="mr-4 bg-white rounded-xl w-48 overflow-hidden shadow-sm" key={item.id}>
+					{spotlightData.map((item) => (
+						<TouchableOpacity
+							className="mr-3 rounded-2xl w-48 overflow-hidden"
+							style={{ borderWidth: 1, borderColor: "#ECECE9" }}
+							key={item.id}
+						>
 							<Image resizeMode="cover" source={{ uri: item.image }} className="w-full h-56" />
 							<View className="p-3">
-								<Text className="text-base font-bold text-gray-800 mt-2">{item.text}</Text>
-								<Text className="text-gray-600 text-sm">{item.description}</Text>
+								<Text className="text-base font-semibold" style={{ color: INK }}>
+									{item.text}
+								</Text>
+								<Text className="text-sm" style={{ color: MUTED }}>
+									{item.description}
+								</Text>
 							</View>
 						</TouchableOpacity>
 					))}
 				</ScrollView>
 
-				<View className="items-center mt-5 mb-6">
-					<Text className="text-sm text-gray-500">FOLLOW US ON</Text>
-					<View className="flex-row gap-4 mt-2">
-						<TouchableOpacity>
-							<View className="bg-blue-500 p-2 rounded-full">
-								<FontAwesome5 name="facebook" size={18} color="#fff" />
-							</View>
-						</TouchableOpacity>
-						<TouchableOpacity>
-							<View className="bg-blue-400 p-2 rounded-full">
-								<FontAwesome5 name="twitter" size={18} color="#fff" />
-							</View>
-						</TouchableOpacity>
-						<TouchableOpacity>
-							<View className="bg-pink-500 p-2 rounded-full">
-								<FontAwesome5 name="instagram" size={18} color="#fff" />
-							</View>
-						</TouchableOpacity>
-					</View>
-				</View>
-
-				<View className="bg-[#f9fafb] rounded-2xl p-4 mb-6 flex-row items-center">
-					<View className="bg-gray-100 p-3 rounded-full mr-3">
-						<GiftIcon size={20} stroke="#333" />
+				<View
+					className="rounded-2xl p-4 mt-8 flex-row items-center"
+					style={{ backgroundColor: "#F7F7F6" }}
+				>
+					<View className="w-10 h-10 rounded-full items-center justify-center mr-3" style={{ backgroundColor: "#E9F5F3" }}>
+						<GiftIcon size={18} stroke={ACCENT} />
 					</View>
 					<View className="flex-1">
-						<Text className="text-base font-semibold">Refer a Sports Enthusiast</Text>
-						<Text className="text-gray-600 text-sm">
-							Earn <Text className="text-blue-500">50 bonus points</Text> by referring a friend
+						<Text className="text-base font-medium" style={{ color: INK }}>
+							Refer a sports enthusiast
+						</Text>
+						<Text className="text-sm mt-0.5" style={{ color: MUTED }}>
+							Earn <Text style={{ color: ACCENT, fontWeight: "600" }}>50 bonus points</Text> by referring a friend
 						</Text>
 					</View>
 				</View>
 
-				<View className="items-center mt-4 mb-10">
-					<Text className="text-2xl font-bold text-[#14b8a6]">ekSathe</Text>
-					<Text className="text-gray-500 text-sm mt-1">Your Sports Community App</Text>
+				<View className="items-center mt-5">
+					<Text className="text-sm" style={{ color: MUTED }}>
+						Follow us
+					</Text>
+					<View className="flex-row gap-5 mt-3">
+						<TouchableOpacity>
+							<FontAwesome5 name="facebook" size={18} color={MUTED} />
+						</TouchableOpacity>
+						<TouchableOpacity>
+							<FontAwesome5 name="twitter" size={18} color={MUTED} />
+						</TouchableOpacity>
+						<TouchableOpacity>
+							<FontAwesome5 name="instagram" size={18} color={MUTED} />
+						</TouchableOpacity>
+					</View>
+				</View>
 
-					<View className="flex-row justify-center gap-2 mt-2">
+				<View className="items-center mt-8 mb-10">
+					<Text className="text-2xl font-bold" style={{ color: ACCENT }}>
+						ekSathe
+					</Text>
+					<Text className="text-sm mt-1" style={{ color: MUTED }}>
+						Your sports community app
+					</Text>
+
+					<View className="flex-row justify-center gap-2 mt-3">
 						<TouchableOpacity>
-							<Text className="text-blue-500 underline text-sm">Privacy Policy</Text>
+							<Text className="text-sm" style={{ color: MUTED }}>
+								Privacy policy
+							</Text>
 						</TouchableOpacity>
-						<Text className="text-gray-500">•</Text>
+						<Text style={{ color: MUTED }}>·</Text>
 						<TouchableOpacity>
-							<Text className="text-blue-500 underline text-sm">Terms of Service</Text>
+							<Text className="text-sm" style={{ color: MUTED }}>
+								Terms of service
+							</Text>
 						</TouchableOpacity>
-						<Text className="text-gray-500">•</Text>
+						<Text style={{ color: MUTED }}>·</Text>
 						<TouchableOpacity>
-							<Text className="text-blue-500 underline text-sm">Feedback</Text>
+							<Text className="text-sm" style={{ color: MUTED }}>
+								Feedback
+							</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
