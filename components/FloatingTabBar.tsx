@@ -7,7 +7,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } fr
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const MUTED = '#6B7280';
-const SLATE = '#3A3D42';
+const ACCENT = '#0D9488';
 const ACTIVE_BG = 'rgba(107,114,128,0.15)';
 
 type FeatherName = React.ComponentProps<typeof Feather>['name'];
@@ -68,9 +68,9 @@ function TabButton({
       <View style={styles.tabBubble}>
         <Animated.View style={[StyleSheet.absoluteFillObject, styles.bubbleBackground, bubbleStyle]} />
         <Animated.View style={iconStyle}>
-          <Feather name={iconName} size={18} color={focused ? SLATE : MUTED} />
+          <Feather name={iconName} size={18} color={focused ? ACCENT : MUTED} />
         </Animated.View>
-        <Text style={[styles.label, { color: focused ? SLATE : MUTED }]}>{label}</Text>
+        <Text style={[styles.label, { color: focused ? ACCENT : MUTED }]}>{label}</Text>
       </View>
     </Pressable>
   );
