@@ -1,7 +1,9 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import Feather from '@expo/vector-icons/Feather';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
+import { useEffect } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const MUTED = '#6B7280';
@@ -26,6 +28,54 @@ const TAB_LABELS: Record<string, string> = {
 
 export const TAB_BAR_HEIGHT = 68;
 
+function TabButton({
+  focused,
+  iconName,
+  label,
+  accessibilityLabel,
+  onPress,
+}: {
+  focused: boolean;
+  iconName: FeatherName;
+  label: string;
+  accessibilityLabel: string;
+  onPress: () => void;
+}) {
+  const progress = useSharedValue(focused ? 1 : 0);
+
+  useEffect(() => {
+    progress.value = withTiming(focused ? 1 : 0, { duration: 220 });
+  }, [focused, progress]);
+
+  const bubbleStyle = useAnimatedStyle(() => ({
+    opacity: progress.value,
+    transform: [{ scale: 0.85 + progress.value * 0.15 }],
+  }));
+
+  const iconStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: withSpring(focused ? 1.08 : 1, { damping: 12, stiffness: 180 }) }],
+  }));
+
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityState={focused ? { selected: true } : {}}
+      accessibilityLabel={accessibilityLabel}
+      android_ripple={{ color: 'rgba(13,148,136,0.12)' }}
+      style={styles.tabItem}
+    >
+      <View style={styles.tabBubble}>
+        <Animated.View style={[StyleSheet.absoluteFillObject, styles.bubbleBackground, bubbleStyle]} />
+        <Animated.View style={iconStyle}>
+          <Feather name={iconName} size={18} color={focused ? SLATE : MUTED} />
+        </Animated.View>
+        <Text style={[styles.label, { color: focused ? SLATE : MUTED }]}>{label}</Text>
+      </View>
+    </Pressable>
+  );
+}
+
 export default function FloatingTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
   const useGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
@@ -44,22 +94,14 @@ export default function FloatingTabBar({ state, descriptors, navigation }: Botto
         };
 
         return (
-          <Pressable
+          <TabButton
             key={route.key}
-            onPress={onPress}
-            accessibilityRole="button"
-            accessibilityState={focused ? { selected: true } : {}}
+            focused={focused}
+            iconName={iconName}
+            label={TAB_LABELS[route.name] ?? route.name}
             accessibilityLabel={descriptors[route.key].options.title ?? route.name}
-            android_ripple={{ color: 'rgba(13,148,136,0.12)' }}
-            style={styles.tabItem}
-          >
-            <View style={[styles.tabBubble, focused && { backgroundColor: ACTIVE_BG }]}>
-              <Feather name={iconName} size={18} color={focused ? SLATE : MUTED} />
-              <Text style={[styles.label, { color: focused ? SLATE : MUTED }]}>
-                {TAB_LABELS[route.name] ?? route.name}
-              </Text>
-            </View>
-          </Pressable>
+            onPress={onPress}
+          />
         );
       })}
     </View>
@@ -115,10 +157,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 12,
-    overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 2,
+  },
+  bubbleBackground: {
+    backgroundColor: ACTIVE_BG,
+    borderRadius: 12,
   },
   label: {
     fontSize: 10,
