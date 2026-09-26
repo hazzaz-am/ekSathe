@@ -28,7 +28,13 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-router",
+     [
+       "expo-router",
+       {
+         "unstable_useServerMiddleware": true
+       }
+     ],
+
       [
         "expo-splash-screen",
         {
@@ -40,7 +46,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,
