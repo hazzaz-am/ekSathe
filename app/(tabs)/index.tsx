@@ -84,7 +84,11 @@ const Home = () => {
 				</View>
 			</View>
 
-			<ScrollView className="px-5" showsVerticalScrollIndicator={false}>
+			<ScrollView
+				className="px-5"
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={{ paddingBottom: 100 }}
+			>
 				<TouchableOpacity className="flex-row items-center justify-between py-3 border-b" style={{ borderColor: "#ECECE9" }}>
 					<View>
 						<Text className="text-base font-medium" style={{ color: INK }}>
